@@ -10,11 +10,17 @@ public class Facade {
   public Facade() {
     //Creation d'annonces temporaires
     this.annoncesCorrespondantes = new LinkedList<Annonce>();
-    Annonce a1 = new Annonce("Paris Square", "Paris", 20, "20/12/2015", "8/10/2017");
-    Annonce a2 = new Annonce("My Open Paris", "Paris", 35, "20/12/2015", "8/10/2017");
-    Annonce a3 = new Annonce("The Malte House", "Londres", 55, "20/12/2015", "8/10/2017");
-    Annonce a4 = new Annonce("Camden B&B", "Londres", 49, "20/12/2015", "8/10/2017");
-    Annonce a5 = new Annonce("My Little Poney - Enora's Palace", "Londres", 30, "20/12/2015", "8/10/2016");
+    Calendar d = Calendar.getInstance();
+    Calendar d2 = Calendar.getInstance();
+    d.set(2016, 5, 21);
+    d2.set(2020, 1, 1);
+
+
+    Annonce a1 = new Annonce("Paris Square", "Paris", 20, d, d2);
+    Annonce a2 = new Annonce("My Open Paris", "Paris", 35, d, d2);
+    Annonce a3 = new Annonce("The Malte House", "Londres", 55, d, d2);
+    Annonce a4 = new Annonce("Camden B&B", "Londres", 49, d, d2);
+    Annonce a5 = new Annonce("My Little Poney - Enora's Palace", "Londres", 30, d, d2);
     annoncesCorrespondantes.add(a1);
     annoncesCorrespondantes.add(a2);
     annoncesCorrespondantes.add(a3);
@@ -25,6 +31,7 @@ public class Facade {
   }
 
   public void selectionLieu(String lieu) {
+    this.annoncesNonCorrespondantes.clear();
     //On recherche les annonces n'ayant pas le lieu voulu
     for (Annonce a : this.annoncesCorrespondantes)
       if (a.getLieu() != lieu)
@@ -36,11 +43,26 @@ public class Facade {
         this.annoncesCorrespondantes.remove(a);
   }
 
-  public void selectionDates(String arrivee, String depart) {
-    //TODO
+  public void selectionDates(Calendar arrivee, Calendar depart) {
+    this.annoncesNonCorrespondantes.clear();
+    Calendar date;
+
+    for (Annonce a : this.annoncesCorrespondantes) {
+      date = arrivee;
+      while (date.compareTo(depart) <= 0) {
+        if (!a.getDisponibilite(date))
+          annoncesNonCorrespondantes.add(a);
+        date.add(Calendar.DATE, 1);
+      }
+    }
+
+    for (Annonce a : this.annoncesNonCorrespondantes)
+      if (this.annoncesCorrespondantes.contains(a))
+        this.annoncesCorrespondantes.remove(a);
   }
 
   public void selectionPrix(int min, int max) {
+    this.annoncesNonCorrespondantes.clear();
     for (Annonce a : this.annoncesCorrespondantes)
       if (a.getPrix() < (double) min)
         this.annoncesNonCorrespondantes.add(a);

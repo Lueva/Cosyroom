@@ -5,24 +5,31 @@ import java.util.*;
 public class Recherche {
 
   private String lieu;
-  private String arrivee, depart;
+  private Calendar arrivee, depart;
   private int min, max;
 
   public void fixerLieu(String lieu)  {
     this.lieu = lieu;
   }
 
-  public void fixerDateArrivee(String arrivee) {
+  public void fixerDateArrivee(Calendar arrivee) {
     this.arrivee = arrivee;
   }
 
-  public void fixerDateDepart(String depart) {
+  public boolean fixerDateDepart(Calendar depart) {
+    if (depart.compareTo(arrivee) <= 0)
+      return false;
     this.depart = depart;
+    return true;
   }
 
-  public void fouchettePrix(int min, int max) {
-    this.min = min;
-    this.max = max;
+  public boolean fouchettePrix(int min, int max) {
+    if (min < max) {
+      this.min = min;
+      this.max = max;
+      return true;
+    }
+    return false;
   }
 
   public List<String> annoncesCorrespondantes() {
