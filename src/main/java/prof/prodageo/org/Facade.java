@@ -47,15 +47,20 @@ public class Facade {
     this.annoncesNonCorrespondantes.clear();
     Calendar date;
 
+    //Pour chaque annonce, on vérifie que chaque jour entre la date d'arrivee et la date de départ est
+    //la date de départ est disponible
     for (Annonce a : this.annoncesCorrespondantes) {
       date = arrivee;
       while (date.compareTo(depart) <= 0) {
-        if (!a.getDisponibilite(date))
+        //Si elle ne l'est pas et que l'annonce n'est pas déjà dans la liste d'annoncesNonCorrespondantes
+        //alors on l'ajoute à celle ci.
+        if (!a.getDisponibilite(date) && !annoncesNonCorrespondantes.contains(a))
           annoncesNonCorrespondantes.add(a);
         date.add(Calendar.DATE, 1);
       }
     }
 
+      //On retire les annonces non disponibles aux dates souhaitées
     for (Annonce a : this.annoncesNonCorrespondantes)
       if (this.annoncesCorrespondantes.contains(a))
         this.annoncesCorrespondantes.remove(a);
@@ -64,7 +69,7 @@ public class Facade {
   public void selectionPrix(int min, int max) {
     this.annoncesNonCorrespondantes.clear();
     for (Annonce a : this.annoncesCorrespondantes)
-      if (a.getPrix() < (double) min)
+      if (a.getPrix() < (double) min || a.getPrix() > (double) max)
         this.annoncesNonCorrespondantes.add(a);
 
     for (Annonce a : this.annoncesNonCorrespondantes)
