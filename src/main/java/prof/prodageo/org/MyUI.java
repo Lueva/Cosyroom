@@ -2,12 +2,15 @@ package prof.prodageo.org;
 
 import javax.servlet.annotation.WebServlet;
 
+import java.util.Date;
+
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.*;
+import com.vaadin.shared.ui.label.ContentMode;
 
 
 import org.slf4j.Logger;
@@ -29,16 +32,19 @@ import com.vaadin.ui.Button.ClickEvent;
 public class MyUI extends UI {
 
         private static final Logger log = LoggerFactory.getLogger(MyUIServlet.class);
+        private Recherche controleur = new Recherche();
 
     /* explicit declaration as attributes of graphical components for GenMyModel */
         final VerticalLayout layout = new VerticalLayout();
+        final HorizontalLayout layoutTitre = new HorizontalLayout();
         final HorizontalLayout layoutRecherche = new HorizontalLayout();
         final VerticalLayout layoutAnnonces = new VerticalLayout();
-        final TextField lieu = new TextField();
-        final PopupDateField dateDepart = new PopupDateField();
-        final PopupDateField dateFin = new PopupDateField();
-        final Slider prixMin = new Slider();
-        final Slider prixMax = new Slider();
+        final Label titre = new Label("<h1>COSYROOM</h1>", ContentMode.HTML);
+        final TextField lieu = new TextField("Lieu");
+        final PopupDateField dateDepart = new PopupDateField("Date arrivée");
+        final PopupDateField dateFin = new PopupDateField("Date départ");
+        final Slider prixMin = new Slider("Prix minimum");
+        final Slider prixMax = new Slider("Prix maximum");
         Button button = new Button("Rechercher") ;
 
 
@@ -48,9 +54,21 @@ public class MyUI extends UI {
     {
         public void buttonClick(ClickEvent event)
         {
-            //layout.addComponent(new Label("Thanks " + name.getValue() + ", it works!"));
-            //log.info("Button clicked with value : " + name.getValue());
+           //titre.setCaption(lieu.getValue());
+           //titre.setCaption(formatDate(dateDepart.getValue()));
+           //titre.setCaption(formatDate(dateFin.getValue()));
+           //titre.setCaption(prixMin.getValue().intValue());
+           //titre.setCaption(prixMax.getValue().intValue());
+           controleur.fixerLieu(lieu.getValue());
+           controleur.fixerDateArrivee(formatDate(dateDepart.getValue()));
+           controleur.fixerDateDepart(formatDate(dateFin.getValue()));
+           controleur.fourchettePrix(prixMin.getValue().intValue(), prixMax.getValue().intValue());
         }
+    }
+
+    private String formatDate(Date date) {
+      //return date.toString();
+      return String.format("%d-%02d-%02d", date.getYear() + 1900, date.getMonth() + 1, date.getDate());
     }
 
 
@@ -85,8 +103,16 @@ public class MyUI extends UI {
 
         ClickMeClass callback = new ClickMeClass() ;
         button.addClickListener( callback ) ;
-        layoutRecherche.addComponents(lieu, dateDepart, dateFin);
-        layout.addComponents(layoutRecherche, layoutAnnonces);
+        layoutTitre.addComponents(titre);
+
+        layoutRecherche.addComponents(lieu, dateDepart, dateFin, prixMin, prixMax, button);
+        layoutRecherche.setMargin(true);
+        layoutRecherche.setSpacing(true);
+        layoutAnnonces.setSpacing(true);
+        layout.setMargin(true);
+        layout.setSpacing(true);
+        layout.addComponents(layoutTitre, layoutRecherche, layoutAnnonces);
+        layout.setComponentAlignment(layoutTitre, Alignment.TOP_CENTER);
 
         layout.setMargin(true);
         layout.setSpacing(true);
