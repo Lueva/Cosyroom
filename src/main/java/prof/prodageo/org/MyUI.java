@@ -3,12 +3,12 @@ package prof.prodageo.org;
 import javax.servlet.annotation.WebServlet;
 
 import java.util.Date;
+import java.util.List;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinServlet;
+import com.vaadin.server.*;
 import com.vaadin.ui.*;
 import com.vaadin.shared.ui.label.ContentMode;
 
@@ -33,19 +33,20 @@ public class MyUI extends UI {
 
         private static final Logger log = LoggerFactory.getLogger(MyUIServlet.class);
         private Recherche controleur = new Recherche();
+        private List<String> annonces = null;
 
     /* explicit declaration as attributes of graphical components for GenMyModel */
         final VerticalLayout layout = new VerticalLayout();
         final HorizontalLayout layoutTitre = new HorizontalLayout();
         final HorizontalLayout layoutRecherche = new HorizontalLayout();
-        final VerticalLayout layoutAnnonces = new VerticalLayout();
+        VerticalLayout layoutAnnonces = new VerticalLayout();
         final Label titre = new Label("<h1>COSYROOM</h1>", ContentMode.HTML);
         final TextField lieu = new TextField("Lieu");
         final PopupDateField dateDepart = new PopupDateField("Date arrivée");
         final PopupDateField dateFin = new PopupDateField("Date départ");
         final Slider prixMin = new Slider("Prix minimum");
         final Slider prixMax = new Slider("Prix maximum");
-        Button button = new Button("Rechercher") ;
+        final Button button = new Button("Rechercher") ;
 
 
     /* explicit callback */
@@ -54,17 +55,31 @@ public class MyUI extends UI {
     {
         public void buttonClick(ClickEvent event)
         {
-           //titre.setCaption(lieu.getValue());
-           //titre.setCaption(formatDate(dateDepart.getValue()));
-           //titre.setCaption(formatDate(dateFin.getValue()));
-           //titre.setCaption(prixMin.getValue().intValue());
-           //titre.setCaption(prixMax.getValue().intValue());
            controleur.fixerLieu(lieu.getValue());
            controleur.fixerDateArrivee(dateDepart.getValue().getYear() + 1900, dateDepart.getValue().getMonth() + 1, dateDepart.getValue().getDate());
            controleur.fixerDateDepart(dateFin.getValue().getYear() + 1900, dateFin.getValue().getMonth() + 1, dateFin.getValue().getDate());
            controleur.fourchettePrix(prixMin.getValue().intValue(), prixMax.getValue().intValue());
+
+           annonces = controleur.annoncesCorrespondantes();
+           actualiserAnnonces();
+           layout.addComponents(layoutAnnonces);
         }
     }
+
+   private VerticalLayout actualiserAnnonces() {
+      layoutAnnonces.removeAllComponents();
+      if (annonces != null) {
+         if (annonces.size() != 0) {
+            for (String s : annonces) {
+               layoutAnnonces.addComponents(representationAnnonce(s));
+            }
+         }
+         else {
+            layoutAnnonces.addComponents(new Label(controleur.getMessageErreur()));
+         }
+      }
+      return layoutAnnonces;
+   }
 
 
     @Override
@@ -103,16 +118,50 @@ public class MyUI extends UI {
         layoutRecherche.setMargin(true);
         layoutRecherche.setSpacing(true);
         layoutAnnonces.setSpacing(true);
+        layoutAnnonces.setImmediate(true);
         layout.setMargin(true);
         layout.setSpacing(true);
         layout.addComponents(layoutTitre, layoutRecherche, layoutAnnonces);
         layout.setComponentAlignment(layoutTitre, Alignment.TOP_CENTER);
+
+        //layoutAnnonces.addComponents(representationAnnonce("Paris Square/Paris/20/Hôtel-budget moderne avec Wi-Fi gratuit/3/PS.jpg"));
 
         layout.setMargin(true);
         layout.setSpacing(true);
 
         setContent(layout);
     }
+
+    private HorizontalLayout representationAnnonce(String annonce) {
+      String[] info = annonce.split("/");
+      HorizontalLayout l = new HorizontalLayout();
+      VerticalLayout milieu = new VerticalLayout();
+      Label titreAnnonce = new Label(info[0]);
+      Label location = new Label(info[1]);
+      Label description = new Label(info[3]);
+      milieu.setSizeFull();
+      milieu.addComponents(titreAnnonce, location, description);
+      VerticalLayout droite = new VerticalLayout();
+      Label prix = new Label(info[2]+"€/nuit");
+      Label note = new Label();
+      note.setContentMode(ContentMode.HTML);
+      String textNote = "";
+      for (int i = 0; i < 5; i++) {
+         if (i < Integer.parseInt(info[4])) {
+            textNote += FontAwesome.STAR.getHtml() + " ";
+         }
+         else {
+            textNote += FontAwesome.STAR_O.getHtml() + " ";
+         }
+      }
+      note.setValue(textNote);
+      droite.setSizeFull();
+      droite.addComponents(prix, note);
+      l.addComponents(new Image("",new ThemeResource("img/" + info[5])), milieu, droite);
+      l.setMargin(true);
+      l.setSpacing(true);
+      return l;
+   }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
