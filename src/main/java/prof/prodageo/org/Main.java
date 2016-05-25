@@ -13,9 +13,9 @@ public class Main {
     c2.set(2017,1,18);
 
     r.fixerLieu("Paris");
-    r.fixerDateArrivee(c);
-    r.fixerDateDepart(c2);
-    r.fouchettePrix(15,50);
+    r.fixerDateArrivee(2017,1,1);
+    r.fixerDateDepart(2017,1,18);
+    r.fourchettePrix(15,50);
     List<String> l = r.annoncesCorrespondantes();
 
     for (String s : l)
