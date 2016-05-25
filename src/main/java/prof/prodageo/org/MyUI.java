@@ -60,17 +60,11 @@ public class MyUI extends UI {
            //titre.setCaption(prixMin.getValue().intValue());
            //titre.setCaption(prixMax.getValue().intValue());
            controleur.fixerLieu(lieu.getValue());
-           controleur.fixerDateArrivee(formatDate(dateDepart.getValue()));
-           controleur.fixerDateDepart(formatDate(dateFin.getValue()));
+           controleur.fixerDateArrivee(dateDepart.getYear() + 1900, dateDepart.getMonth() + 1, dateDepart.getDate());
+           controleur.fixerDateDepart(dateFin.getYear() + 1900, dateFin.getMonth() + 1, dateFin.getDate());
            controleur.fourchettePrix(prixMin.getValue().intValue(), prixMax.getValue().intValue());
         }
     }
-
-    private String formatDate(Date date) {
-      //return date.toString();
-      return String.format("%d-%02d-%02d", date.getYear() + 1900, date.getMonth() + 1, date.getDate());
-    }
-
 
 
     @Override
