@@ -138,11 +138,11 @@ public class MyUI extends UI {
       VerticalLayout milieu = new VerticalLayout();
       Label titreAnnonce = new Label(info[0]);
       Label location = new Label(info[1]);
-      Label description = new Label(info[3]);
+      Label description = new Label(info[2]);
       milieu.setSizeFull();
       milieu.addComponents(titreAnnonce, location, description);
       VerticalLayout droite = new VerticalLayout();
-      Label prix = new Label(info[2]+"€/nuit");
+      Label prix = new Label(info[3]+"€/nuit");
       Label note = new Label();
       note.setContentMode(ContentMode.HTML);
       String textNote = "";

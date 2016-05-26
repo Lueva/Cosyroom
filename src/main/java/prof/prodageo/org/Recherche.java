@@ -2,12 +2,13 @@ package prof.prodageo.org;
 
 import java.util.*;
 
+//Controleur
 public class Recherche {
 
   private String lieu;
   private Calendar arrivee, depart;
   private int min, max;
-  private String messageErreur;
+  private String messageErreur = "";
 
 
   public void fixerLieu(String lieu)  {
@@ -38,7 +39,7 @@ public class Recherche {
       this.max = max;
     }
     else
-      messageErreur = "Le prix maximum doit être inférieur ou égal au prix minimum.";
+      messageErreur = "Le prix maximum doit être supérieur ou égal au prix minimum.";
   }
 
 
@@ -50,8 +51,7 @@ public class Recherche {
   public List<String> annoncesCorrespondantes() {
     Facade facade = new Facade();
     facade.selectionLieu(lieu);
-
-    if (arrivee.compareTo(depart) >= 0)
+    if (arrivee.compareTo(depart) <= 0)
       facade.selectionDates(arrivee, depart);
     else
       messageErreur = "Les dates sont incohérentes. La date de départ doit être ultérieure à la date d'arrivée.";
@@ -59,9 +59,13 @@ public class Recherche {
     facade.selectionPrix(min,max);
 
     List<String> listeAnnonce = facade.effectuerRecherche();
-    if (listeAnnonce.size() == 0)
+    if (listeAnnonce.size() == 0 && messageErreur == "")
       messageErreur = "Il n'y a pas d'annonce correspondant à votre recherche.";
 
     return listeAnnonce;
+  }
+
+  public void setMessageErreur() {
+    this.messageErreur = "";
   }
 }

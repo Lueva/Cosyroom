@@ -8,12 +8,12 @@ public class Annonce {
   private String nomChambreHote;
   private String lieu;
   private String description;
-  private double note;
+  private int note;
   private String image;
   private double prix;
   private Map<String,Boolean> dateDispo;
 
-  public Annonce(String nom, String lieu, double prix, Calendar dateDebut, Calendar datefin, String desc, double note, String image ) {
+  public Annonce(String nom, String lieu, double prix, Calendar dateDebut, Calendar datefin, String desc, int note, String image ) {
     this.nomChambreHote = nom;
     this.lieu = lieu;
     this.prix = prix;
@@ -59,7 +59,11 @@ public class Annonce {
     return this.image;
   }
 
-  public double getNote() {
+  public int getNote() {
     return this.note;
+  }
+
+  public String toString() {
+    return this.nomChambreHote + "/" + this.lieu + "/" + this.description + "/" + this.prix + "/" + this.note + "/" + this.image;
   }
 }
