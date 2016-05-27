@@ -1,5 +1,6 @@
 package prof.prodageo.org;
 
+//import prof.prodageo.db;
 import java.util.*;
 
 public class Facade {
@@ -7,6 +8,7 @@ public class Facade {
   private List<Annonce> annoncesCorrespondantes;
   private List<Annonce> annoncesNonCorrespondantes;
   private Calendar d, d2;
+  private DbWrapper dbw;
 
   private void setDates() {
     d.set(2016, 5, 21);
@@ -14,6 +16,9 @@ public class Facade {
   }
 
   public Facade() {
+    // Creation de la BD H2 via DbWrapper
+    dbw = new DbWrapper();
+    dbw.init();
     //Creation d'annonces temporaires
     this.annoncesCorrespondantes = new LinkedList<Annonce>();
     d = Calendar.getInstance();

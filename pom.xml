@@ -68,7 +68,7 @@
 		</dependency>
 		<!--
 		  Needed when using the widgetset optimizer (custom ConnectorBundleLoaderFactory).
-		  
+
 		  For widgetset compilation, vaadin-client-compiler is automatically added on the
 		  compilation classpath by vaadin-maven-plugin so normally there is no need for an
 		  explicit dependency.
@@ -84,7 +84,7 @@
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
 		</dependency>
-		
+
 		<!-- add slf4j interfaces to classpath -->
 		<dependency>
 		    <groupId>org.slf4j</groupId>
@@ -93,7 +93,7 @@
 		    <scope>compile</scope>
 		</dependency>
 
-		<!-- add commons logging to slf4j bridge to classpath --> 
+		<!-- add commons logging to slf4j bridge to classpath -->
 		<!-- acts as jcl but routes commons-logging calls to slf4j -->
 		<dependency>
 		    <groupId>org.slf4j</groupId>
@@ -117,6 +117,12 @@
 		    <groupId>log4j</groupId>
 		    <artifactId>log4j</artifactId>
 		    <version>1.2.16</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.192</version>
 		</dependency>
 
 	</dependencies>
@@ -204,6 +210,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+
 	</build>
 
 	<profiles>
@@ -213,7 +220,7 @@
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
-			
+
 			<repositories>
 				<repository>
 					<id>vaadin-prereleases</id>
@@ -228,5 +235,6 @@
 			</pluginRepositories>
 		</profile>
 	</profiles>
+
 
 </project>
