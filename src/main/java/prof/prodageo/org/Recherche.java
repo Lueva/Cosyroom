@@ -10,6 +10,21 @@ public class Recherche {
   private int min, max;
   private String messageErreur = "";
 
+  private Calendar fixerDate(int annee, int mois, int date) {
+    Calendar c = Calendar.getInstance();
+    Date d;
+
+    if (annee != 0 || mois != 0 || date != 0) {
+      d = new Date(annee-1900,mois-1,date);
+      if (d.compareTo(c.getTime()) > 0)
+        c.set(annee, mois, date);
+      else
+        return null;
+    }
+    else
+      return null;
+    return c;
+  }
 
   public void fixerLieu(String lieu)  {
     if (lieu == "")
@@ -20,16 +35,16 @@ public class Recherche {
 
 
   public void fixerDateArrivee(int anneeArrivee, int moisArrivee, int dateArrivee) {
-    Calendar c = Calendar.getInstance();
-    c.set(anneeArrivee, moisArrivee, dateArrivee);
-    this.arrivee = c;
+    this.arrivee = fixerDate(anneeArrivee,moisArrivee,dateArrivee);
+    if (this.arrivee == null)
+      messageErreur = "La date d'arrivée doit être ultérieure à la date d'aujourd'hui";
   }
 
 
   public void fixerDateDepart(int anneeDepart, int moisDepart, int dateDepart) {
-    Calendar c = Calendar.getInstance();
-    c.set(anneeDepart, moisDepart, dateDepart);
-    this.depart = c;
+    this.depart = fixerDate(anneeDepart,moisDepart,dateDepart);
+    if (this.depart == null)
+      messageErreur = "La date de départ doit être ultérieure à la date d'aujourd'hui";
   }
 
 
@@ -50,15 +65,21 @@ public class Recherche {
 
   public List<String> annoncesCorrespondantes() {
     Facade facade = new Facade();
+    List<String> listeAnnonce = new LinkedList<String>();
     facade.selectionLieu(lieu);
-    if (arrivee.compareTo(depart) <= 0)
-      facade.selectionDates(arrivee, depart);
-    else
-      messageErreur = "Les dates sont incohérentes. La date de départ doit être ultérieure à la date d'arrivée.";
 
-    facade.selectionPrix(min,max);
+    if (messageErreur == "")
+      if (arrivee.compareTo(depart) < 0)
+        facade.selectionDates(arrivee, depart);
+      else
+        messageErreur = "Les dates sont incohérentes. La date de départ doit être ultérieure à la date d'arrivée.";
 
-    List<String> listeAnnonce = facade.effectuerRecherche();
+    if (messageErreur == "")
+      facade.selectionPrix(min,max);
+
+    if (messageErreur == "")
+      listeAnnonce = facade.effectuerRecherche();
+
     if (listeAnnonce.size() == 0 && messageErreur == "")
       messageErreur = "Il n'y a pas d'annonce correspondant à votre recherche.";
 

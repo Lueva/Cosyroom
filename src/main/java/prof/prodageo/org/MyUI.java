@@ -55,9 +55,17 @@ public class MyUI extends UI {
     {
         public void buttonClick(ClickEvent event)
         {
+           controleur.setMessageErreur();
            controleur.fixerLieu(lieu.getValue());
-           controleur.fixerDateArrivee(dateDepart.getValue().getYear() + 1900, dateDepart.getValue().getMonth() + 1, dateDepart.getValue().getDate());
-           controleur.fixerDateDepart(dateFin.getValue().getYear() + 1900, dateFin.getValue().getMonth() + 1, dateFin.getValue().getDate());
+           if (dateDepart.getValue() != null && dateFin.getValue() != null) {
+            controleur.fixerDateArrivee(dateDepart.getValue().getYear() + 1900, dateDepart.getValue().getMonth() + 1, dateDepart.getValue().getDate());
+            controleur.fixerDateDepart(dateFin.getValue().getYear() + 1900, dateFin.getValue().getMonth() + 1, dateFin.getValue().getDate());
+           }
+           else {
+             controleur.fixerDateArrivee(0,0,0);
+             controleur.fixerDateDepart(0,0,0);
+           }
+
            controleur.fourchettePrix(prixMin.getValue().intValue(), prixMax.getValue().intValue());
 
            annonces = controleur.annoncesCorrespondantes();
