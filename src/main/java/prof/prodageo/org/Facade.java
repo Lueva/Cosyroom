@@ -25,23 +25,27 @@ public class Facade {
     d2 = Calendar.getInstance();
 
     setDates();
-    Annonce a1 = new Annonce("Paris Square", "Paris", 20, d, d2, "Hôtel-budget moderne avec Wi-Fi gratuit", 3, "PS.jpg");
-    setDates();
-    Annonce a2 = new Annonce("My Open Paris", "Paris", 35, d, d2, "Situé en plein cœur de Paris, cet établissement affiche une excellente situation géographique ", 4, "MOP.jpg");
-    setDates();
-    Annonce a3 = new Annonce("The Malte House", "Londres", 55, d, d2, "Bed and breakfast 3 étoiles, avec petit-déjeuner gratuit et piscine extérieure", 4, "TMH.jpg");
-    setDates();
-    Annonce a4 = new Annonce("Camden B&B", "Londres", 49, d, d2, "B&B près du centre de Londres", 3, "camden.jpg");
-    setDates();
-    Annonce a5 = new Annonce("My Little Poney - Enora's Palace", "Londres", 30, d, d2, "Petit lieu de Paradis au centre de la capitale", 5, "MLP_EP.jpg");
+    initialiserAnnonces();
+  }
 
-    annoncesCorrespondantes.add(a1);
-    annoncesCorrespondantes.add(a2);
-    annoncesCorrespondantes.add(a3);
-    annoncesCorrespondantes.add(a4);
-    annoncesCorrespondantes.add(a5);
+  private void initialiserAnnonces() {
+      Annonce a1 = new Annonce("Paris Square", "Paris", 20, d, d2, "Hôtel-budget moderne avec Wi-Fi gratuit", 3, "PS.jpg");
+      setDates();
+      Annonce a2 = new Annonce("My Open Paris", "Paris", 35, d, d2, "Situé en plein cœur de Paris, cet établissement affiche une excellente situation géographique ", 4, "MOP.jpg");
+      setDates();
+      Annonce a3 = new Annonce("The Malte House", "Londres", 55, d, d2, "Bed and breakfast 3 étoiles, avec petit-déjeuner gratuit et piscine extérieure", 4, "TMH.jpg");
+      setDates();
+      Annonce a4 = new Annonce("Camden B&B", "Londres", 49, d, d2, "B&B près du centre de Londres", 3, "camden.jpg");
+      setDates();
+      Annonce a5 = new Annonce("My Little Poney - Enora's Palace", "Londres", 30, d, d2, "Petit lieu de Paradis au centre de la capitale", 5, "MLP_EP.jpg");
 
-    this.annoncesNonCorrespondantes = new LinkedList<Annonce>();
+      annoncesCorrespondantes.add(a1);
+      annoncesCorrespondantes.add(a2);
+      annoncesCorrespondantes.add(a3);
+      annoncesCorrespondantes.add(a4);
+      annoncesCorrespondantes.add(a5);
+
+      this.annoncesNonCorrespondantes = new LinkedList<Annonce>();
   }
 
 
@@ -102,6 +106,7 @@ public class Facade {
 
     for (Annonce a : annoncesCorrespondantes)
       annonces.add(a.toString());
+    initialiserAnnonces();
     return annonces;
   }
 }

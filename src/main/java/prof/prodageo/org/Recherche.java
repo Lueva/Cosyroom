@@ -9,6 +9,7 @@ public class Recherche {
   private Calendar arrivee, depart;
   private int min, max;
   private String messageErreur = "";
+  private Facade facade = new Facade();
 
   private Calendar fixerDate(int annee, int mois, int date) {
     Calendar c = Calendar.getInstance();
@@ -64,7 +65,7 @@ public class Recherche {
 
 
   public List<String> annoncesCorrespondantes() {
-    Facade facade = new Facade();
+
     List<String> listeAnnonce = new LinkedList<String>();
     facade.selectionLieu(lieu);
 
