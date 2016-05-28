@@ -91,6 +91,10 @@ public class DbWrapper {
                 }
         }
 
+        public Connection getConnection() {
+            return conn;
+        }
+
 }
 /*
    public class DbStuff1 {

@@ -65,7 +65,6 @@ public class Recherche {
 
 
   public List<String> annoncesCorrespondantes() {
-
     List<String> listeAnnonce = new LinkedList<String>();
     facade.selectionLieu(lieu);
 

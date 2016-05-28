@@ -2,6 +2,7 @@ package prof.prodageo.org;
 
 //import prof.prodageo.db;
 import java.util.*;
+import java.sql.*;
 
 public class Facade {
 
@@ -109,4 +110,41 @@ public class Facade {
     initialiserAnnonces();
     return annonces;
   }
+
+
+
+
+  ////////// Partie adaptee pour la BD //////////
+
+  public List<String> effectuerRechercheBD(String lieu, double min, double max, Calendar debut, Calendar fin) throws SQLException{
+      List<String> annonces = new LinkedList<String>();
+      PreparedStatement stat = dbw.getConnection().prepareStatement("SELECT id,nomChambreHote,lieu,description,prix,note,image FROM annonce WHERE lieu=? AND prix>=? AND prix<=?;");
+      stat.setString(1,lieu);
+      stat.setDouble(2,min);
+      stat.setDouble(3,max);
+      ResultSet rs = stat.executeQuery();
+      int id,note;
+      double prix;
+      String nomChambreHote,lieuChambreHote,description,image;
+      while(rs.next()) {
+          id = rs.getInt(1);
+          if (datesCorrectes(id,debut,fin)) {
+              nomChambreHote = rs.getString(2);
+              lieuChambreHote = rs.getString(3);
+              description = rs.getString(5);
+              prix = rs.getDouble(4);
+              note = rs.getInt(6);
+              image = rs.getString(7);
+              annonces.add(nomChambreHote+"/"+lieuChambreHote+"/"+description+"/"+prix+"/"+note+"/"+image);
+          }
+      }
+      return annonces;
+  }
+
+
+  // A modifier pour que ca renvoie true si les dates de la table datesIndispo ne sont pas entre dateDebut et dateFin
+  private boolean datesCorrectes(int id, Calendar debut, Calendar fin) {
+      return true;
+  }
+
 }
