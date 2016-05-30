@@ -127,14 +127,14 @@ public class Facade {
       double prix;
       String nomChambreHote,lieuChambreHote,description,image;
       while(rs.next()) {
-          id = rs.getInt(1);
+          id = rs.getInt("id");
           if (datesCorrectes(id,debut,fin)) {
-              nomChambreHote = rs.getString(2);
-              lieuChambreHote = rs.getString(3);
-              description = rs.getString(5);
-              prix = rs.getDouble(4);
-              note = rs.getInt(6);
-              image = rs.getString(7);
+              nomChambreHote = rs.getString("nomChambreHote");
+              lieuChambreHote = rs.getString("lieu");
+              description = rs.getString("description");
+              prix = rs.getDouble("prix");
+              note = rs.getInt("note");
+              image = rs.getString("image");
               annonces.add(nomChambreHote+"/"+lieuChambreHote+"/"+description+"/"+prix+"/"+note+"/"+image);
           }
       }
@@ -143,7 +143,21 @@ public class Facade {
 
 
   // A modifier pour que ca renvoie true si les dates de la table datesIndispo ne sont pas entre dateDebut et dateFin
-  private boolean datesCorrectes(int id, Calendar debut, Calendar fin) {
+  private boolean datesCorrectes(int id, Calendar debut, Calendar fin) throws SQLException {
+      PreparedStatement statDates = dbw.getConnection().prepareStatement("SELECT annee,mois,jour FROM dateIndispo WHERE id=?;");
+      statDates.setInt(1,id);
+      ResultSet dates = statDates.executeQuery();
+      int annee,mois,jour;
+      Calendar dateIndispo = Calendar.getInstance();
+      while(dates.next()) {
+          annee = dates.getInt("annee");
+          mois = dates.getInt("mois");
+          jour = dates.getInt("jour");
+          dateIndispo.set(annee,mois,jour);
+          System.out.println(dateIndispo.toString());
+          if (dateIndispo.after(debut) && dateIndispo.before(fin))
+              return false;
+      }
       return true;
   }
 

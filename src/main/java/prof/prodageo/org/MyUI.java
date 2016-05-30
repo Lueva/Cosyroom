@@ -64,8 +64,7 @@ public class MyUI extends UI {
            else {
              controleur.fixerDateArrivee(0,0,0);
              controleur.fixerDateDepart(0,0,0);
-           }
-
+         }
            controleur.fourchettePrix(prixMin.getValue().intValue(), prixMax.getValue().intValue());
 
            annonces = controleur.annoncesCorrespondantes();
