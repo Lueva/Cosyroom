@@ -36,12 +36,17 @@ public class DbWrapper {
 
                     Statement stat = conn.createStatement(); // (3)
                     // Creation table ANNONCE
-                    stat.executeUpdate("CREATE TABLE annonce (id SERIAL PRIMARY KEY,nomChambreHote VARCHAR(40) NOT NULL,lieu VARCHAR(25) NOT NULL,prix DOUBLE PRECISION NOT NULL,description VARCHAR(100) NOT NULL,note INTEGER NOT NULL CHECK (note >= 0 AND note <= 5),image VARCHAR(10) NOT NULL);");
-                    stat.executeUpdate("INSERT INTO annonce(nomChambreHote,lieu,prix,description,note,image) VALUES('Paris Square', 'Paris', 20, 'Hôtel-budget moderne avec Wi-Fi gratuit', 3, 'PS.jpg');");
-                    stat.executeUpdate("INSERT INTO annonce(nomChambreHote,lieu,prix,description,note,image) VALUES('My Open Paris', 'Paris', 35, 'Situé en plein cœur de Paris, cet établissement affiche une excellente situation géographique ', 4, 'MOP.jpg');");
-                    stat.executeUpdate("INSERT INTO annonce(nomChambreHote,lieu,prix,description,note,image) VALUES('The Malte House', 'Londres', 55, 'Bed and breakfast 3 étoiles, avec petit-déjeuner gratuit et piscine extérieure', 4, 'TMH.jpg');");
-                    stat.executeUpdate("INSERT INTO annonce(nomChambreHote,lieu,prix,description,note,image) VALUES('Camden B&B', 'Londres', 49, 'B&B près du centre de Londres', 3, 'camden.jpg');");
-                    stat.executeUpdate("INSERT INTO annonce(nomChambreHote,lieu,prix,description,note,image) VALUES('My Little Poney - Enora''s Palace', 'Londres', 30, 'Petit lieu de Paradis au centre de la capitale', 5, 'MLP_EP.jpg');");
+                    stat.executeUpdate("CREATE TABLE annonce (id SERIAL PRIMARY KEY,nomChambreHote VARCHAR(40) NOT NULL,lieu VARCHAR(25) NOT NULL,prix DOUBLE PRECISION NOT NULL,description VARCHAR(100) NOT NULL,note INTEGER NOT NULL CHECK (note >= 0 AND note <= 5),image VARCHAR(15) NOT NULL);");
+                    stat.executeUpdate("INSERT INTO annonce(nomChambreHote,lieu,prix,description,note,image) VALUES('Paris Square', 'paris', 20, 'Hôtel-budget moderne avec Wi-Fi gratuit', 3, 'PS.jpg');");
+                    stat.executeUpdate("INSERT INTO annonce(nomChambreHote,lieu,prix,description,note,image) VALUES('My Open Paris', 'paris', 35, 'Situé en plein cœur de Paris, cet établissement affiche une excellente situation géographique ', 4, 'MOP.jpg');");
+                    stat.executeUpdate("INSERT INTO annonce(nomChambreHote,lieu,prix,description,note,image) VALUES('Paris Prestigieux', 'paris', 170, 'Magnifique demeure au jardin majestueux. Pauvres s''abstenir :(', 1, 'MOCHE.jpg');");
+                    stat.executeUpdate("INSERT INTO annonce(nomChambreHote,lieu,prix,description,note,image) VALUES('The Malte House', 'londres', 55, 'Bed and breakfast 3 étoiles, avec petit-déjeuner gratuit et piscine extérieure', 4, 'TMH.jpg');");
+                    stat.executeUpdate("INSERT INTO annonce(nomChambreHote,lieu,prix,description,note,image) VALUES('Camden B&B', 'londres', 49, 'B&B près du centre de Londres', 3, 'camden.jpg');");
+                    stat.executeUpdate("INSERT INTO annonce(nomChambreHote,lieu,prix,description,note,image) VALUES('My Little Poney - Enora''s Palace', 'londres', 30, 'Petit lieu de Paradis au centre de la capitale', 5, 'MLP_EP.jpg');");
+                    stat.executeUpdate("INSERT INTO annonce(nomChambreHote,lieu,prix,description,note,image) VALUES('La maison de l''UML', 'rouen', 42, 'Modeste demeure avec vue sur la Seine du haut du donjon', 5, 'CHATEAU.jpg');");
+                    stat.executeUpdate("INSERT INTO annonce(nomChambreHote,lieu,prix,description,note,image) VALUES('INSA Rouen', 'rouen', 0, 'Logement de fortune dans une salle de TP', 3, 'INSA.jpg');");
+
+
                     // creation table DATE
                     stat.executeUpdate("CREATE TABLE dateIndispo(idAnnonce INTEGER NOT NULL REFERENCES annonce(id),annee INTEGER NOT NULL,mois INTEGER NOT NULL,jour INTEGER NOT NULL,);");
                     stat.executeUpdate("INSERT INTO dateIndispo VALUES(1,2016,06,10);");
@@ -54,6 +59,12 @@ public class DbWrapper {
                     stat.executeUpdate("INSERT INTO dateIndispo VALUES(4,2016,06,17);");
                     stat.executeUpdate("INSERT INTO dateIndispo VALUES(5,2016,06,18);");
                     stat.executeUpdate("INSERT INTO dateIndispo VALUES(5,2016,06,19);");
+                    stat.executeUpdate("INSERT INTO dateIndispo VALUES(6,2016,06,20);");
+                    stat.executeUpdate("INSERT INTO dateIndispo VALUES(6,2016,06,21);");
+                    stat.executeUpdate("INSERT INTO dateIndispo VALUES(7,2016,06,22);");
+                    stat.executeUpdate("INSERT INTO dateIndispo VALUES(7,2016,06,23);");
+                    stat.executeUpdate("INSERT INTO dateIndispo VALUES(8,2016,06,24);");
+                    stat.executeUpdate("INSERT INTO dateIndispo VALUES(8,2016,06,25);");
                     stat.close();
                 }
 
@@ -70,6 +81,7 @@ public class DbWrapper {
                 return;
             } catch (final SQLException e) {
                 log.info("SQLException sur H2mem !");
+                log.info(e.getMessage());
                 return;
             }
 

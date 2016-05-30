@@ -51,7 +51,7 @@ public class Recherche {
 
 
   public void fourchettePrix(int min, int max) {
-    if (min < max) {
+    if (min <= max) {
       this.min = min;
       this.max = max;
     }
@@ -68,27 +68,25 @@ public class Recherche {
   public List<String> annoncesCorrespondantes() {
     List<String> listeAnnonce = new LinkedList<String>();
     try{
-        listeAnnonce = facade.effectuerRechercheBD(lieu,min,max,arrivee,depart);
+        if (messageErreur == ""){
+          if (arrivee.after(depart))
+            messageErreur = "Les dates sont incohérentes. La date de départ doit être ultérieure à la date d'arrivée.";
+          else{
+            listeAnnonce = facade.effectuerRechercheBD(lieu,min,max,arrivee,depart);
+            if (listeAnnonce.size() == 0 && messageErreur == "")
+              messageErreur = "Il n'y a pas d'annonce correspondant à votre recherche.";
+          }
+        }
     }
     catch(SQLException e){}
-
     // facade.selectionLieu(lieu);
     //
-    // if (messageErreur == "")
-    //   if (arrivee.compareTo(depart) < 0)
-    //     facade.selectionDates(arrivee, depart);
-    //   else
-    //     messageErreur = "Les dates sont incohérentes. La date de départ doit être ultérieure à la date d'arrivée.";
-    //
+
     // if (messageErreur == "")
     //   facade.selectionPrix(min,max);
     //
     // if (messageErreur == "")
     //   listeAnnonce = facade.effectuerRecherche();
-    //
-    // if (listeAnnonce.size() == 0 && messageErreur == "")
-    //   messageErreur = "Il n'y a pas d'annonce correspondant à votre recherche.";
-    //
     return listeAnnonce;
   }
 

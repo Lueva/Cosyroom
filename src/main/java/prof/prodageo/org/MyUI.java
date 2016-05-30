@@ -109,13 +109,13 @@ public class MyUI extends UI {
 
         prixMin.setImmediate(true);
         prixMin.setMin(0.0);
-        prixMin.setMax(1000.0);
+        prixMin.setMax(200.0);
         prixMin.setValue(0.0);
 
         prixMax.setImmediate(true);
         prixMax.setMin(0.0);
-        prixMax.setMax(1000.0);
-        prixMax.setValue(500.0);
+        prixMax.setMax(200.0);
+        prixMax.setValue(100.0);
 
         ClickMeClass callback = new ClickMeClass() ;
         button.addClickListener( callback ) ;
@@ -144,7 +144,8 @@ public class MyUI extends UI {
       HorizontalLayout l = new HorizontalLayout();
       VerticalLayout milieu = new VerticalLayout();
       Label titreAnnonce = new Label(info[0]);
-      Label location = new Label(info[1]);
+      Label location = new Label(info[1].substring(0,1).toUpperCase()
+      + info[1].substring(1));
       Label description = new Label(info[2]);
       milieu.setSizeFull();
       milieu.addComponents(titreAnnonce, location, description);
