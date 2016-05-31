@@ -11,26 +11,26 @@ public class Annonce {
   private int note;
   private String image;
   private double prix;
-  private Map<String,Boolean> dateDispo;
+  // private Map<String,Boolean> dateDispo;
 
-  public Annonce(String nom, String lieu, double prix, Calendar dateDebut, Calendar datefin, String desc, int note, String image ) {
+  public Annonce(String nom, String lieu, double prix, String desc, int note, String image ) {
     this.nomChambreHote = nom;
     this.lieu = lieu;
     this.prix = prix;
-    this.dateDispo = new HashMap<String,Boolean>();
+    // this.dateDispo = new HashMap<String,Boolean>();
     this.image = image;
     this.note = note;
     this.description = desc;
 
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    String formatDateDebut = sdf.format(dateDebut.getTime());
-    String formatDateFin = sdf.format(datefin.getTime());
-
-    while (dateDebut.compareTo(datefin) <= 0) {
-      dateDispo.put(formatDateDebut, true);
-      dateDebut.add(Calendar.DATE, 1);
-      formatDateDebut = sdf.format(dateDebut.getTime());
-    }
+    // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    // String formatDateDebut = sdf.format(dateDebut.getTime());
+    // String formatDateFin = sdf.format(datefin.getTime());
+    //
+    // while (dateDebut.compareTo(datefin) <= 0) {
+    //   dateDispo.put(formatDateDebut, true);
+    //   dateDebut.add(Calendar.DATE, 1);
+    //   formatDateDebut = sdf.format(dateDebut.getTime());
+    // }
   }
 
   public String getLieu() {
@@ -41,11 +41,11 @@ public class Annonce {
     return this.prix;
   }
 
-  public boolean getDisponibilite(Calendar d) {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    String formatDateDebut = sdf.format(d.getTime());
-    return dateDispo.get(formatDateDebut);
-  }
+  // public boolean getDisponibilite(Calendar d) {
+  //   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+  //   String formatDateDebut = sdf.format(d.getTime());
+  //   return dateDispo.get(formatDateDebut);
+  // }
 
   public String getNom() {
     return this.nomChambreHote;

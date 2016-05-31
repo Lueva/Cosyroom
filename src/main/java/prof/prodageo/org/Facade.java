@@ -126,6 +126,7 @@ public class Facade {
       int id,note;
       double prix;
       String nomChambreHote,lieuChambreHote,description,image;
+      Annonce annonce;
       while(rs.next()) {
           id = rs.getInt("id");
           if (datesCorrectes(id,debut,fin)) {
@@ -135,7 +136,9 @@ public class Facade {
               prix = rs.getDouble("prix");
               note = rs.getInt("note");
               image = rs.getString("image");
-              annonces.add(nomChambreHote+"/"+lieuChambreHote+"/"+description+"/"+prix+"/"+note+"/"+image);
+              annonce = new Annonce(nomChambreHote,lieuChambreHote,prix,description,note,image);
+              //   annonces.add(nomChambreHote+"/"+lieuChambreHote+"/"+description+"/"+prix+"/"+note+"/"+image);
+              annonces.add(annonce.toString());
           }
       }
       return annonces;
